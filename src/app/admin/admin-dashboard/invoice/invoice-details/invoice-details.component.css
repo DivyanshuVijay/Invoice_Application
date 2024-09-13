@@ -1,0 +1,157 @@
+/* Comments Section */
+.comments-section {
+  background: #f4f7f9;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.comments-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-textarea {
+  resize: none;
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.file-attach-options button {
+  padding: 8px 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-attach-options button i {
+  margin-right: 8px;
+}
+
+.comment-button {
+  padding: 10px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Preview Section */
+.comment-preview-image {
+  max-width: 30%; /* Adjusted width to 30% */
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+}
+
+.comment-preview-pdf {
+  display: inline-block;
+  margin-top: 10px;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.comment-preview-pdf:hover {
+  text-decoration: underline;
+}
+
+/* Existing Comments */
+.existing-comments {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
+
+.comments-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.comment-item {
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: #f8f9fa;
+  border: 1px solid #e1e5e8;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.comment-item:hover {
+  background-color: #f1f5f9;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.comment-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.message {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: #777;
+}
+
+
+.comment-image {
+  max-width: 200px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.comment-pdf-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.comment-pdf-link:hover {
+  text-decoration: underline;
+}
+
+.delete-button {
+  align-self: flex-end;
+  padding: 4px 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .client-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .file-attach-options button {
+    width: 48%;
+    font-size: 14px;
+    padding: 6px;
+  }
+}
+
+  .contentToConvert{
+    width: 100%;
+    position: absolute;
+    top: -999px;
+    left: -9999px;
+  }
+  
+

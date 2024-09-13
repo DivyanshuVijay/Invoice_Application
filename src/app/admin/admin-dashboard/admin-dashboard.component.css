@@ -1,0 +1,30 @@
+.tag{
+  background-color: white;
+    border-radius: 30px;
+    padding: 0px 10px;
+}
+
+/* Header Styles */
+.header-container {
+  background-color: #a7d7f5;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.logo-section img {
+  max-width: 150px;
+  cursor: pointer;
+}
+
+.logout-section {
+  display: flex;
+  align-items: center;
+}

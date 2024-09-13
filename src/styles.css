@@ -1,1 +1,187 @@
 /* You can add global styles to this file, and also import other style files */
+.wrapper-container{
+    display: flex;
+      flex-direction: row;
+      flex: 1;
+      flex-basis: auto;
+      box-sizing: border-box;
+      min-width: 0;
+  }
+  /* header{
+    height: 77px;
+  } */
+  .aside{
+    overflow: auto;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    background-color: white;
+    color: black;
+    width: 235px;
+    overflow: auto;
+    height: calc(100vh - 77px);
+    overflow: hidden;
+  }
+  .showtext{
+    text-wrap: nowrap;
+    transition: all 0.1s ease;
+  }
+  .hidetext{
+    text-wrap: nowrap;
+    transition: all 0.3s ease;
+    font-size: 0; line-height: 0;
+  }
+  .main{
+    height: calc(100vh - 77px);
+    /* height: 100vh; */
+    background-color: var(--secondary-color);
+    overflow: auto;
+  }
+  /* toggle */
+  .main-active{
+    width: 100%;
+    transition: all 0.3s ease;
+  }
+  .main-collapse{
+    width: calc(100% - 65px);
+    transition: all 0.3s ease;
+  }
+  .sidebar-active{
+    width: 65px;
+    transition: all 0.3s ease;
+
+    li{
+      color: rgb(16, 16, 101);
+    }
+  }
+  .sidebar-collapse{
+    width: 200px;
+    transition: all 0.3s ease;
+    li{
+      color: rgb(16, 16, 101);
+    }
+  }
+  /* toggle end*/
+  .sidebar-ul{
+    list-style-type: none;
+    padding-left: 0px;
+    li{
+      display: flex;
+      align-items: center;
+      margin: 1rem;
+      padding: 10px 0px 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all .1s ease;
+      span{
+        padding-left: 1rem;
+        text-wrap: nowrap;
+      }
+    }
+    li:hover{
+      background-color: rgba(82, 185, 249, 0.338);
+      border-radius: 8px;
+      border-left: rgba(82, 185, 249);
+    }
+  }
+  .sidebar-router-active{
+    background-color: rgba(82, 185, 249, 0.338);
+    border-radius: 8px;
+    border-left: 8px solid var(--primary-color);
+  }
+  .profile{
+    img{
+      border-radius: 50px;
+    height: 45px;
+    width: 45px;
+    border: 1px solid var(--primary-color);
+    }
+  }
+  .backdrop-s{
+    display: none;
+  }
+  @media (max-width: 992px){
+    .backdrop-s{
+      display: block;
+    }
+  
+    .sidebar-active-mobile-backdrop{
+      width: 0px;
+      transform: translateX(0);
+      transition: all 0.3s ease;
+      background-color: #00000078;
+      position: absolute;
+    }
+
+    .sidebar-collapse-mobile-backdrop{
+      top:0px;
+      transition: all 0.3s ease;
+      position: absolute;
+      left: 0px;
+      right:0px;
+      bottom: 0px;
+      background-color: #00000078;
+      z-index: 99;
+    }
+    
+    
+    .aside{
+      position: fixed;
+      z-index: 999;
+    }
+    .sidebar-active-mobile{
+      width: 0px;
+      transform: translateX(-235px);
+      transition: all 1s ease;
+    }
+    .sidebar-collapse-mobile{
+      width: 200px;
+      transform: translateX(0px);
+      transition: all 1s ease;
+    }
+    .profile{
+      border-radius: 50px;
+     /*  height: 70px;
+      width: 70px; */
+      img{
+        border-radius: 50px;
+      height: 50px;
+      width: 50px;
+      }
+    }
+    .main-active{
+      width: 100%;
+    }
+    .main-collapse{
+      width: 100%;
+    }
+  }
+  /* dashboard sidebar end */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+
+
+
+/* Suffix this section at the end of your styles.css for toogling between @media screen and @media print mode */
+/*############################################################################################################*/
+app-print-invoice {
+  /* hide the printing component from @media screen */
+  display: none;
+}
+
+@media print {
+  /* invert the display (show/hide) properties of the main */
+  /* aplication component and the printing component       */
+
+  app-print-invoice {
+    display: block;
+  }
+
+  .view-content {
+    display: none;
+  }
+}
+/*#############################################################################################################*/
+
+

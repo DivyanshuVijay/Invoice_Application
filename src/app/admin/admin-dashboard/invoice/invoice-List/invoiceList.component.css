@@ -1,0 +1,74 @@
+.dashboard-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .btn-create-invoice {
+    background-color: #28a745;
+    border-color: #28a745;
+  }
+  
+  .btn-create-invoice:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+  }
+  
+  .filter-controls .form-label {
+    font-weight: bold;
+    color: #495057;
+  }
+  
+  .filter-controls .form-control {
+    border-radius: 4px;
+  }
+  
+  .table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .table-bordered th, .table-bordered td {
+    border: 1px solid #dee2e6;
+  }
+  
+  .action-icon {
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  
+  .action-icon:hover {
+    transform: scale(1.2);
+  }
+  
+  .table th, .table td {
+    vertical-align: middle;
+    text-align: center;
+  }
+  
+  @media (max-width: 768px) {
+    .btn-create-invoice {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    .filter-controls .form-check {
+      justify-content: center;
+    }
+  }
+
+  
+  .contentToConvert {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  .red-row {
+    /* background-color: rgb(255, 0, 0);
+    color: white; */
+    border: 2px solid red;
+  }

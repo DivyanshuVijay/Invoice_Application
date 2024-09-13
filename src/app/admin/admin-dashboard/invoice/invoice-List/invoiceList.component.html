@@ -1,0 +1,157 @@
+<div class="container-fluid mt-4">
+  <!-- Dashboard Section -->
+  <div class="row mb-4 text-center">
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+      <div class="card p-4 dashboard-card">
+        <h2>Total Amount</h2>
+        <p class="h4">{{ totalAmount | currency:'₹' }}</p>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+      <div class="card p-4 dashboard-card">
+        <h2>Total TDS</h2>
+        <p class="h4">{{ totalTDS | currency:'₹' }}</p>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+      <div class="card p-4 dashboard-card">
+        <h2>Total Received Amount</h2>
+        <p class="h4">{{ totalReceivedAmount | currency:'₹' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Invoice Button -->
+  <div class="text-end mb-4">
+    <button type="button" class="btn btn-success btn-create-invoice" (click)="navigateToAddInvoice()">Create Invoice</button>
+  </div>
+
+  <!-- Date Range, Company Dropdown, and Search -->
+  <form [formGroup]="invoiceFilterForm">
+    <div class="row mb-4 filter-controls">
+      <!-- TDS Filter Toggle -->
+      <div class="col-md-3 col-sm-12 mb-3">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="tdsToggle" formControlName="tdsFilter" (change)="applyFilters()" />
+          <label class="form-check-label" for="tdsToggle">Show Only Invoices with TDS</label>
+        </div>
+      </div>
+
+      <!-- Start Date -->
+      <div class="col-md-3 col-sm-6 mb-3">
+        <label for="startDate" class="form-label">Start Date</label>
+        <input type="date" id="startDate" class="form-control" formControlName="startDate" (input)="applyFilters()" />
+      </div>
+
+      <!-- End Date -->
+      <div class="col-md-3 col-sm-6 mb-3">
+        <label for="endDate" class="form-label">End Date</label>
+        <input type="date" id="endDate" class="form-control" formControlName="endDate" (input)="applyFilters()" />
+      </div>
+
+      <!-- Company Filter -->
+      <div class="col-md-3 col-sm-12 mb-3">
+        <label for="company" class="form-label">Company</label>
+        <select id="company" class="form-control" formControlName="selectedCompany" (change)="applyFilters()">
+          <option disabled value="">Select Company</option>
+          @for(company of companies; track $index){
+            <option [value]="company.name">{{ company.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="row mb-4">
+      <div class="col-12 d-flex">
+        <input type="text" class="form-control me-2" placeholder="Search Invoices" formControlName="searchTerm" (input)="applyFilters()" />
+        <button type="button" class="btn btn-primary me-2" (click)="downloadFilteredInvoices(filteredInvoices)">Download</button>
+        <button type="button" class="btn btn-warning" (click)="navigateToPrint(filteredInvoices)">Print</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Display Total and Filtered Count -->
+  <div class="text-center mb-3">
+    <p>{{ filteredInvoices.length }} of {{ invoiceList.length }} Invoices</p>
+  </div>
+
+  <!-- Invoice List -->
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Invoice Number</th>
+          <th scope="col">Created At</th>
+          <th scope="col">Expected Payment Date</th>
+          <th scope="col">Client Name</th>
+          <th scope="col">Project Name</th>
+          <th scope="col">Company</th>
+          <th scope="col">Status</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(invoice of filteredInvoices; track $index){
+        <tr [class.red-row]="isOverdue(invoice)">
+          <td >{{ invoice.invoiceNumber }}</td>
+          <td>{{ invoice.createdAt | date: 'MMM d, y' }}</td>
+
+          <td >{{ invoice.expected_payment_date | date: 'MMM d, y'}}</td>
+          <td>{{ invoice.clientName.name }}</td>
+          <td >{{ invoice.assigned_project.title}}</td>
+          <td >{{ invoice.company.name }}</td>
+          <td>
+            <select [(ngModel)]="invoice.status" (ngModelChange)="updateStatus(invoice)">
+              <option value="CREATED">CREATED</option>
+              <option value="PAID">PAID</option>
+              <option value="SENT">SENT</option>
+              <option value="PARTIAL">PARTIAL</option>
+            </select>
+          </td>
+          <td >{{ invoice.converted_inr_amount | currency:'₹' }}</td>
+          <td>
+            <div class="d-flex justify-content-center gap-3">
+              <div (click)="navigateToView(invoice.id)" class="action-icon text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                  <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                </svg>
+              </div>
+              <div (click)="navigateToDownload(invoice)" class="action-icon text-success">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16">
+                  <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0"/>
+                </svg>
+              </div>
+              <div (click)="navigateToPrint(invoice)" class="action-icon text-warning">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                  <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1"/>
+                  <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>
+                </svg>
+              </div>
+              <div (click)="navigateToUpdate(invoice.id)" class="action-icon text-info">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square icon" viewBox="0 0 16 16">
+                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                </svg>
+              </div>
+              <div (click)="navigateToDelete(invoice.id)" class="action-icon text-danger">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3-fill icon" viewBox="0 0 16 16">
+                  <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                </svg>
+              </div>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    <div class="contentToConvert" id="pdf-invoice">
+      <app-pdf-template></app-pdf-template>
+    </div>
+  </div>
+</div>
+
+
+

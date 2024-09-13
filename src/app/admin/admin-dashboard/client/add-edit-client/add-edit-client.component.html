@@ -1,0 +1,71 @@
+<form class="col-lg-10 col-md-10 col-sm-12 ps-3 pe-3 m-auto mt-5" [formGroup]="clientForm" >
+    @if(clientId){
+        <h2 class="text-center mb-3">Update Client</h2>
+    }@else{
+        <h2 class="text-center mb-3">Add Client</h2>
+    }
+
+    <div class=" mb-3">
+        <label  class="form-label">Enter name <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" placeholder="Enter name" formControlName="name" [ngClass]="{'is-invalid': clientForm.get('name')?.invalid && clientForm.get('name')?.touched}">
+    </div>
+    <div class=" mb-3">
+        <label  class="form-label">Enter email <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" placeholder="Enter email" formControlName="email" [ngClass]="{'is-invalid': clientForm.get('email')?.invalid && clientForm.get('email')?.touched}">
+    </div>
+    <div class="mb-3">
+        <label  class="form-label">Enter phone <span class="text-danger">*</span></label>
+        <input class="form-control" placeholder="Enter phone" formControlName="phone" [ngClass]="{'is-invalid': clientForm.get('phone')?.invalid && clientForm.get('phone')?.touched}">
+    </div>
+    <div class=" mb-3">
+        <label  class="form-label">Select Project Category <span class="text-danger">*</span></label>
+        <select class="form-select" formControlName="project_category" [ngClass]="{'is-invalid': clientForm.get('project_category')?.invalid && clientForm.get('project_category')?.touched}">
+            <option disabled value="">Select Project Category</option>
+            @for(category of categories ; track $index){
+                <option [value]="category.name">{{category.name}}</option>
+            }
+        </select>
+    </div>
+    <div class=" mb-3">
+        <label  class="form-label">Select Source <span class="text-danger">*</span></label>
+        <select class="form-select" formControlName="source" [ngClass]="{'is-invalid': clientForm.get('source')?.invalid && clientForm.get('source')?.touched}">
+            <option disabled value="" >Select Source</option>
+            @for(source of sources ; track $index){
+                <option [value]="source.name">{{source.name}}</option>
+            }
+        </select>
+    </div>
+    <div class=" mb-3">
+        <label  class="form-label">Select Status <span class="text-danger">*</span></label>
+        <select class="form-select" formControlName="status" [ngClass]="{'is-invalid': clientForm.get('status')?.invalid && clientForm.get('status')?.touched}">
+            <option disabled value="">Select Status</option>
+            @for(status of statuses ; track $index){
+                <option [value]="status.name">{{status.name}}</option>
+            }
+        </select>
+    </div>
+    <div class=" mb-3">
+        <label  class="form-label">Enter Address <span class="text-danger">*</span></label>
+        <textarea class="form-control" placeholder="Enter Address" style="height: 100px" formControlName="address"  [ngClass]="{'is-invalid': clientForm.get('address')?.invalid && clientForm.get('address')?.touched}"></textarea>
+    </div>
+    <div class=" mb-3">
+        <label  class="form-label">Select Assigned Person <span class="text-danger">*</span></label>
+        <select class="form-select" formControlName="contact_person" [ngClass]="{'is-invalid': clientForm.get('contact_person')?.invalid && clientForm.get('contact_person')?.touched}">
+            <option disabled value="">Select Assigned Person</option>
+            @for( employee of employees ; track $index){
+                <option [value]="employee.name">{{employee.name}}</option>
+            }
+        </select>
+    </div>
+    <div class=" mb-3">
+        <label  class="form-label">Description Related to Price <span class="text-danger">*</span></label>
+        <textarea class="form-control" placeholder="Description Related to Price" formControlName="quoted_rate" [ngClass]="{'is-invalid': clientForm.get('quoted_rate')?.invalid && clientForm.get('quoted_rate')?.touched}"></textarea>
+    </div>
+
+    
+    <div class="input-group mb-3">
+        <button type="button" class="btn btn-outline-primary w-100" (click)="onSubmit()"> 
+            {{ clientId ? 'Update Client' : 'Create Client' }}
+        </button>
+    </div>
+</form>

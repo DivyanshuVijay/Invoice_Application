@@ -1,0 +1,119 @@
+<div class="container-fluid mt-4">
+  <h1 class="text-center client-title">Client Detail Page</h1>
+
+  @if(client) {
+  <div class="container mt-4">
+    <!-- Client Details Section -->
+    <div class="client-details">
+      <div class="client-header text-center">
+        <h2>{{ client.name }}</h2>
+      </div>
+      <div class="client-info-grid">
+        <div class="client-info-item">
+          <h5>Phone:</h5>
+          <p>{{ client.phone }}</p>
+        </div>
+        <div class="client-info-item">
+          <h5>Email:</h5>
+          <p>{{ client.email }}</p>
+        </div>
+        <div class="client-info-item">
+          <h5>Address:</h5>
+          <p>{{ client.address }}</p>
+        </div>
+        <div class="client-info-item">
+          <h5>Project Category:</h5>
+          <p>{{ client.project_category }}</p>
+        </div>
+        <div class="client-info-item">
+          <h5>Status:</h5>
+          <p>{{ client.status }}</p>
+        </div>
+        <div class="client-info-item">
+          <h5>Contact Person:</h5>
+          <p>{{ client.contact_person }}</p>
+        </div>
+        <div class="client-info-item">
+          <h5>Source:</h5>
+          <p>{{ client.source }}</p>
+        </div>
+        <div class="client-info-item">
+          <h5>Description Related To Price:</h5>
+          <p>{{ client.quoted_rate }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="comments-section mt-5">
+      <h4 class="text-center comments-title">Comments</h4>
+      <form [formGroup]="commentForm" class="comment-form">
+        <textarea type="text" class="form-control" formControlName="message" placeholder="Add a comment..." ></textarea>
+        
+        <div class="file-attach-options d-flex justify-content-between mt-2">
+          <button class="btn btn-warning w-45" type="button" (click)="openFileSelector('image')">Attach Image</button>
+          <button class="btn btn-warning w-45" type="button" (click)="openFileSelector('pdf')">Attach PDF</button>
+        </div>
+
+        <input type="file" (change)="handlefileInput($event)" #fileInput style="display: none;" />
+        
+        <button class="btn btn-primary w-100 mt-3" type="button" (click)="addComment()">Add Comment</button>
+      </form>
+
+      @if(previewCommentImage){
+      <div class="mt-3">
+        @if(selectedFileType === 'image'){
+        <img [src]="previewCommentImage" alt="Preview" class="comment-preview-image"   />
+        } @else {
+        <a [href]="previewCommentImage" target="_blank" class="comment-preview-pdf">Selected PDF</a>
+        }
+      </div>
+      }
+
+      @if(comments.length > 0) {
+      <form [formGroup]="searchCommentForm">
+        <div class="mt-3">
+          <input type="text" class="form-control" placeholder="Search comments..." formControlName="textToSearch" (input)="searchComment()" />
+        </div>
+      </form>
+
+      <div class="existing-comments mt-4">
+        <h5 class="text-center">- Existing Comments -</h5>
+        @if(filteredComments.length !== 0) {
+        <ul class="comments-list">
+          @for(comment of filteredComments; track $index) {
+          <li class="comment-item">
+            <div class="comment-content">
+              <span class="message">{{ comment.message }}</span>
+              <span class="timestamp">{{ comment.createdAt?.seconds * 1000 | date: 'MMM d, y, h:mm a' }}</span>
+
+              @if(comment.fileType === 'image'){
+              <img [src]="comment.imageObject.url" alt="Comment Image" class="comment-image" (click)="openImage(comment.imageObject.url)" style="cursor: pointer;"/>
+              }
+              
+              @if(comment.fileType === 'pdf'){
+              <a [href]="comment.imageObject.url" target="_blank" class="comment-pdf-link">View PDF</a>
+              }
+              
+              <button class="btn btn-danger btn-sm delete-button ms-2" (click)="deleteComment(comment)">Delete</button>
+            </div>
+          </li>
+          }
+        </ul>
+        } @else {
+        <div class="text-muted text-center mt-4">
+          No Matched comments.
+        </div>
+        }
+      </div>
+      } @else {
+      <div class="text-muted text-center mt-4">
+        No comments yet. Be the first to comment!
+      </div>
+      }
+    </div>
+  </div>
+  } @else {
+  <div class="text-center">Loading...</div>
+  }
+</div>

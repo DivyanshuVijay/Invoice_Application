@@ -1,0 +1,126 @@
+<h1 class="text-center mt-3">Invoice Detail Page</h1>
+
+@if(invoice){
+  <button class="btn btn-success mb-2"  (click)="downloadPDF()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+      <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+    </svg> Download Invoice</button>
+  <div id="invoice">
+    <div style="padding: 20px; font-family: Arial, sans-serif; border: 1px solid #ddd;">
+      <h2 style="text-align: center; color: #333;">Invoice #{{ invoice?.invoiceNumber }}</h2>
+  
+      <div style="margin-bottom: 20px;">
+        <p><strong>Client Name:</strong> {{ invoice?.clientName.name }}</p>
+        <p><strong>Company:</strong> {{ invoice?.company.name }}</p>
+        <p><strong>Description:</strong> {{ invoice?.description }}</p>
+      </div>
+  
+      <h2><strong>Items:</strong></h2>
+      <table width="100%" style="border-collapse: collapse; margin-bottom: 20px;">
+        <thead>
+          <tr style="background-color: #f4f4f4;">
+            <th style="padding: 8px; border: 1px solid #ddd;">Item Name</th>
+            <th style="padding: 8px; border: 1px solid #ddd;">Quantity</th>
+            <th style="padding: 8px; border: 1px solid #ddd;">Price</th>
+            <th style="padding: 8px; border: 1px solid #ddd;">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+            @for(item of invoice?.items ; track $index){
+                <tr>
+                  <td style="padding: 8px; border: 1px solid #ddd;">{{ item.name }}</td>
+                  <td style="padding: 8px; border: 1px solid #ddd;">{{ item.quantity }}</td>
+                  <td style="padding: 8px; border: 1px solid #ddd;">{{ item.price |currency:invoice.selectedCurrencySymbol  }}</td>
+                  <td style="padding: 8px; border: 1px solid #ddd;">{{ item.quantity * item.price | currency:invoice.selectedCurrencySymbol  }}</td>
+                </tr>
+            }
+        </tbody>
+      </table>
+  
+      <div style="text-align: right;">
+        <p><strong>Amount:</strong> {{ invoice?.amount | currency:invoice.selectedCurrencySymbol }}</p>
+        <p><strong>TDS:</strong> {{ invoice?.tds | currency:invoice.selectedCurrencySymbol }}</p>
+        <h3><strong>Total Recieved Amount:</strong> {{ invoice?.total_recieved_amount | currency:invoice.selectedCurrencySymbol }}</h3>
+      </div>
+    </div>
+  </div>
+  
+
+<!-- Comments Section -->
+<div class="comments-section mt-5 mb-4">
+  <h4 class="text-center comments-title">Comments</h4>
+  <form [formGroup]="commentForm" class="comment-form">
+    <textarea type="text" class="form-control" formControlName="message" placeholder="Add a comment..." ></textarea>
+    
+    <div class="file-attach-options d-flex justify-content-between mt-2">
+      <button class="btn btn-warning w-45" type="button" (click)="openFileSelector('image')">Attach Image</button>
+      <button class="btn btn-warning w-45" type="button" (click)="openFileSelector('pdf')">Attach PDF</button>
+    </div>
+
+    <input type="file" (change)="handlefileInput($event)" #fileInput style="display: none;" />
+    
+    <button class="btn btn-primary w-100 mt-3" type="button" (click)="addComment()">Add Comment</button>
+  </form>
+
+  @if(previewCommentImage){
+  <div class="mt-3">
+    @if(selectedFileType === 'image'){
+    <img [src]="previewCommentImage" alt="Preview" class="comment-preview-image"   />
+    } @else {
+    <a [href]="previewCommentImage" target="_blank" class="comment-preview-pdf">Selected PDF</a>
+    }
+  </div>
+  }
+
+  @if(comments.length > 0) {
+    <form [formGroup]="searchCommentForm">
+      <div class="mt-3">
+        <input type="text" class="form-control" placeholder="Search comments..." formControlName="textToSearch"  (input)="searchComment()">
+      </div>
+    </form>
+
+
+    <div class="existing-comments mt-4">
+      <h5 class="text-center">- Existing Comments -</h5>
+      @if(filteredComments.length !== 0) {
+      <ul class="comments-list">
+        @for(comment of filteredComments; track $index) {
+        <li class="comment-item">
+          <div class="comment-content">
+            <span class="message">{{ comment.message }}</span>
+            <span class="timestamp">{{ comment.createdAt?.seconds * 1000 | date: 'MMM d, y, h:mm a' }}</span>
+
+            @if(comment.fileType === 'image'){
+            <img [src]="comment.imageObject.url" alt="Comment Image" class="comment-image" (click)="openImage(comment.imageObject.url)" style="cursor: pointer;"/>
+            }
+            
+            @if(comment.fileType === 'pdf'){
+            <a [href]="comment.imageObject.url" target="_blank" class="comment-pdf-link">View PDF</a>
+            }
+            
+            <button class="btn btn-danger btn-sm delete-button ms-2" (click)="deleteComment(comment)">Delete</button>
+          </div>
+        </li>
+        }
+      </ul>
+      } @else {
+      <div class="text-muted text-center mt-4">
+        No Matched comments.
+      </div>
+      }
+    </div>
+  } @else {
+  <div class="text-muted text-center mt-4">
+    No comments yet. Be the first to comment!
+  </div>
+  }
+</div>
+}@else{
+<div class="text-center">Loading...</div>
+}
+
+
+<div class="contentToConvert">
+  <app-pdf-template></app-pdf-template>
+</div>

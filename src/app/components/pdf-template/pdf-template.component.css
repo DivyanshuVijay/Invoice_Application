@@ -1,0 +1,83 @@
+#invoice-template {
+    width: 210mm; /* A4 width */
+    height: 297mm; /* A4 height */
+    padding: 60px;
+    font-family: Arial, sans-serif;
+    margin: auto;
+    box-sizing: border-box;
+}
+
+
+.header{
+    display:flex ;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.invoice_date{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.billto_instructions{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #242179;
+}
+
+.payment_subtotal{
+    display: flex;
+    justify-content: space-between;
+}
+
+.payment_type{
+    text-align: left;
+    font-weight: 700;
+    font-size: small;
+}
+
+.subtotal{
+    width: 45%;
+    border-bottom: 2px solid gray;
+    display: flex;
+    justify-content: space-between;
+}
+.account_info_total_payment{
+    display: flex;
+    justify-content: space-between;
+}
+
+.payment_info{
+    font-size: small;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    
+    p{
+        margin-bottom: 0;
+    }  
+}
+.client_info{
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    
+    p{
+        margin-bottom: 0;
+    }  
+}
+.total_amount_section{
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
+
+.total_amount{
+    border-top: 2px solid gray;
+    border-bottom: 2px solid gray;
+    display: flex;
+    justify-content: space-between;
+}

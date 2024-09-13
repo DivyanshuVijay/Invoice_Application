@@ -1,0 +1,92 @@
+<form class="col-lg-10 col-md-10 col-sm-12 ps-3 pe-3 m-auto mt-5" [formGroup]="companyForm" >
+    @if(companyId){
+        <h2 class="text-center mb-3">Update Company</h2>
+    }@else{
+        <h2 class="text-center mb-3">Add Company</h2>
+    }
+
+    <div [ngClass]="{'is-invalid': companyForm.get('logo')?.invalid && companyForm.get('logo')?.touched}">
+        <label  class="form-label">Choose Logo <span class="text-danger">*</span></label>
+        <div class="input-group mb-3">
+            <!--File Input  -->
+            <input
+            type="file"
+            class="form-control"
+            (change)="handlefileInput($event)"
+            required
+            
+            />
+            
+            <!-- logo preview -->
+        </div>
+    </div>
+    <div id="previewBanner" class="mt-3">
+        @if(previewLogoImage){
+        <img [src]="previewLogoImage" width="100" class="mb-4" />
+        } @if(companyForm.value.logo){
+        <img
+        [src]="companyForm.value.logo?.url"
+        width="100"
+        class="mb-4"
+        />
+        }
+        <!-- <button class="btn btn-primary ms-3" (click)="removeLogo()">Remove Logo</button> -->
+    </div>
+    <div class="mb-3" >
+        <label  class="form-label">Enter Prefix <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" placeholder="Enter Prefix" formControlName="prefix" [ngClass]="{'is-invalid': companyForm.get('prefix')?.invalid && companyForm.get('prefix')?.touched}">
+    </div>
+    <div class="mb-3">
+        <label  class="form-label">Enter name <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" placeholder="Enter name" formControlName="name" [ngClass]="{'is-invalid': companyForm.get('name')?.invalid && companyForm.get('name')?.touched}">
+    </div>
+    <div class=" mb-3">
+        <label  class="form-label">Enter email <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" placeholder="Enter email" formControlName="email" [ngClass]="{'is-invalid': companyForm.get('email')?.invalid && companyForm.get('email')?.touched}">
+    </div>
+    <div class="mb-3">
+        <label  class="form-label">Enter phone <span class="text-danger">*</span></label>
+        <input class="form-control" placeholder="Enter phone" formControlName="phone" [ngClass]="{'is-invalid': companyForm.get('phone')?.invalid && companyForm.get('phone')?.touched}">
+    </div>
+    <div class="mb-3">
+        <label  class="form-label">Enter Address <span class="text-danger">*</span></label>
+        <textarea class="form-control" placeholder="Enter Address" style="height: 100px" formControlName="address" [ngClass]="{'is-invalid': companyForm.get('address')?.invalid && companyForm.get('address')?.touched}"></textarea>
+    </div>
+    <div class=" mb-3">
+        <label  class="form-label">Enter Website <span class="text-danger">*</span></label>
+        <input class="form-control" placeholder="Enter Website" formControlName="website" [ngClass]="{'is-invalid': companyForm.get('website')?.invalid && companyForm.get('website')?.touched}">
+    </div>
+    
+    <!-- account info -->
+    <div class=" mb-3">
+        <label  class="form-label">Enter PAN Number <span class="text-danger">*</span></label>
+        <input class="form-control" placeholder="Enter PAN Number" formControlName="panNumber" [ngClass]="{'is-invalid': companyForm.get('panNumber')?.invalid && companyForm.get('panNumber')?.touched}">
+    </div>
+    <div class=" mb-3">
+        <label  class="form-label">Enter Account Name <span class="text-danger">*</span></label>
+        <input class="form-control" placeholder="Enter Account Name" formControlName="accountName" [ngClass]="{'is-invalid': companyForm.get('accountName')?.invalid && companyForm.get('accountName')?.touched}">
+    </div>
+    <div class="mb-3">
+        <label  class="form-label">Enter Account Number <span class="text-danger">*</span></label>
+        <input class="form-control" placeholder="Enter Account Number" formControlName="accountNumber" [ngClass]="{'is-invalid': companyForm.get('accountNumber')?.invalid && companyForm.get('accountNumber')?.touched}">
+    </div>
+    <div class="mb-3">
+        <label  class="form-label">Enter Bank <span class="text-danger">*</span></label>
+        <input class="form-control" placeholder="Enter Bank" formControlName="bank" [ngClass]="{'is-invalid': companyForm.get('bank')?.invalid && companyForm.get('bank')?.touched}">
+    </div>
+    <div class="mb-3">
+        <label  class="form-label">Enter Branch <span class="text-danger">*</span></label>
+        <input class="form-control" placeholder="Enter Branch" formControlName="branch" [ngClass]="{'is-invalid': companyForm.get('branch')?.invalid && companyForm.get('branch')?.touched}">
+    </div>
+    <div class="mb-3">
+        <label  class="form-label">Enter IFSC Code <span class="text-danger">*</span></label>
+        <input class="form-control" placeholder="Enter IFSC Code" formControlName="ifscCode" [ngClass]="{'is-invalid': companyForm.get('ifscCode')?.invalid && companyForm.get('ifscCode')?.touched}">
+    </div>
+
+    <!-- button -->
+    <div class="input-group mb-3">
+        <button type="button" class="btn btn-outline-primary w-100" (click)="onSubmit()">
+            {{ companyId ? 'Update Company' : 'Create Company' }}
+        </button>
+    </div>
+</form>

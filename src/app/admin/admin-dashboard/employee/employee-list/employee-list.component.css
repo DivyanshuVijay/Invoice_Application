@@ -1,0 +1,54 @@
+.table-responsive {
+    margin-top: 15px;
+}
+
+.table thead th {
+    text-align: center;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.action-icon {
+    cursor: pointer;
+    color: #007bff;
+    transition: transform 0.3s ease;
+}
+
+.action-icon:hover {
+    transform: scale(1.1);
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+
+  .contentToConvert{
+    width: 100%;
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }

@@ -1,0 +1,217 @@
+<form class="col-lg-10 col-md-10 col-sm-12 ps-3 pe-3 m-auto mt-5" [formGroup]="invoiceForm">
+    <h2 class="text-center mb-3">{{ invoiceId ? 'Update Invoice' : 'Add Invoice' }}</h2>
+
+        <!-- Currency Dropdown -->
+        <div class="d-flex justify-content-end mb-3">
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="currencyDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ selectedCurrencySymbol }}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="currencyDropdown">
+                    <li><a class="dropdown-item" (click)="selectCurrency('₹', 'INR')">₹ INR</a></li>
+                    <li><a class="dropdown-item" (click)="selectCurrency('$', 'USD')">$ USD</a></li>
+                    <li><a class="dropdown-item" (click)="selectCurrency('€', 'EUR')">€ EUR</a></li>
+                </ul>
+            </div>
+        </div>
+
+    <!-- Invoice Number and Client Name (Inline for Medium & Large Devices) -->
+    <div class="row mb-3">
+        <div class="col-md-4 mb-1">
+            <label for="clientName" class="form-label">Client Name <span class="text-danger">*</span></label>
+            <select class="form-select" formControlName="clientName" [compareWith]="compareFn" (change)="applyFilters()" [ngClass]="{'is-invalid': invoiceForm.get('clientName')?.invalid && invoiceForm.get('clientName')?.touched}">
+                <option disabled value="" selected>Select Client</option>
+                @for( client of clients ; track $index){
+                    <option [ngValue]="client">{{client.name}}</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="company" class="form-label">Company <span class="text-danger">*</span></label>
+            <select id="company" class="form-select" formControlName="company" [compareWith]="compareFn" [ngClass]="{'is-invalid': invoiceForm.get('company')?.invalid && invoiceForm.get('company')?.touched}">
+                <option disabled value="" selected>Select Company</option>
+                @for(company of companies; track $index) {
+                    <option [ngValue]="company">{{ company.name }}</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4 mb-1">
+            <label for="invoiceNumber" class="form-label">Invoice Number</label>
+            <input type="text" id="invoiceNumber" class="form-control" placeholder="Invoice Number" formControlName="invoiceNumber" >
+            <small  style="color: rgb(0, 106, 220);">Type only if you want a custom one; else we will create it by default.</small>
+        </div>
+    </div>
+
+    
+    <div class="row mb-3">
+            <!-- Status Dropdown -->
+            <div class="col-md-3">
+                <label for="status" class="form-label">Status</label>
+                <select id="status" class="form-select" formControlName="status" [ngClass]="{'is-invalid': invoiceForm.get('status')?.invalid && invoiceForm.get('status')?.touched}">
+                    <option value="CREATED">CREATED</option>
+                    <option value="SENT">SENT</option>
+                    <option value="PARTIAL">PARTIAL</option>
+                    <option value="PAID">PAID</option>
+                </select>
+            </div>
+            <!-- Description -->
+            <div class="col-md-3">
+                <label for="company" class="form-label">Assign Project <span class="text-danger">*</span></label>
+                <select id="company" class="form-select" formControlName="assigned_project"  [compareWith]="compareFn" [ngClass]="{'is-invalid': invoiceForm.get('assigned_project')?.invalid && invoiceForm.get('assigned_project')?.touched}">
+                    <option disabled value="" selected>Assign Project</option>
+                    @for(project of filteredProjects; track $index) {
+                        <option [ngValue]="project">{{ project.title }}</option>
+                    }
+                </select>
+            </div>
+            <!-- Expected payment date -->
+            <div class="col-md-3">
+                <label for="company" class="form-label">Expected Payment Date <span class="text-danger">*</span></label>
+                <input type="date" id="expected_payment_date" class="form-control" placeholder="Expected Payment Date" formControlName="expected_payment_date" [ngClass]="{'is-invalid': invoiceForm.get('expected_payment_date')?.invalid && invoiceForm.get('expected_payment_date')?.touched}">
+            </div>
+            <div class="col-md-3">
+                <label for="company" class="form-label">Created At</label>
+                <input type="date" id="createdAt" class="form-control" placeholder="Created At" formControlName="createdAt" >
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+                <textarea id="description" class="form-control" placeholder="Write description" style="height: 100px" formControlName="description" [ngClass]="{'is-invalid': invoiceForm.get('description')?.invalid && invoiceForm.get('description')?.touched}"></textarea>
+            </div>
+        </div>
+
+    <!-- Table Header for Items -->
+    <div class="row mb-3 mt-2 text-center font-weight-bold d-sm-flex pb-1 pt-1 " style="background-color: rgb(210, 210, 210);">
+        <div class="col-md-1">
+            <strong style="text-wrap: nowrap;">
+                Serial No
+            </strong>
+        </div>
+        <div class="col-md-4">
+            <strong>
+            Item Name
+            </strong> 
+        </div>
+        <div class="col-md-2">
+            <strong>
+                Quantity
+            </strong>
+        </div>
+        <div class="col-md-2">
+            <strong>
+                Price
+            </strong>
+        </div>
+        <div class="col-md-2">
+            <strong>
+                Total
+            </strong>    
+        </div>
+        <div class="col-md-1">
+            <strong>
+                Action
+            </strong>
+        </div>
+    </div>
+
+    <!-- Dynamic Items (FormArray) -->
+    <div formArrayName="items" class="mb-3">
+        @for(item of items().controls; track $index) {
+            <div [formGroupName]="$index" class="row mb-3">
+                <!-- Serial Number -->
+                <div class="col-md-1 d-flex align-items-center justify-content-center">
+                    {{ $index + 1 }}
+                </div>
+                <!-- Item Name -->
+                <div class="col-md-4 d-flex align-items-center justify-content-center">
+                    <input type="text" class="form-control" placeholder="Item Name" formControlName="name">
+                </div>
+                <!-- Quantity -->
+                <div class="col-md-2 d-flex align-items-center justify-content-center">
+                    <input type="number" class="form-control" placeholder="Quantity" formControlName="quantity" >
+                </div>
+                <!-- Price -->
+                <div class="col-md-2 d-flex align-items-center justify-content-center">
+                    <input type="number" class="form-control" placeholder="Price" formControlName="price" >
+                </div>
+                <!-- Total -->
+                <div class="col-md-2 d-flex align-items-center justify-content-center">
+                    <input type="text" class="form-control" placeholder="Total" [value]="calculateItemTotal($index)" disabled>
+                </div>
+                <!-- Remove Button -->
+                <div class="col-md-1 d-flex align-items-center justify-content-center" >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" (click)="removeItem($index)" class="bi bi-x-square remove-icon" viewBox="0 0 16 16">
+                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </div>
+            </div>
+            <hr>
+        }
+    </div>
+    
+    <!-- Add Item Button -->
+    <div class="mb-3">
+        <button type="button" class="btn btn-success" (click)="addItem()">Add Item</button>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label for="amount" class="form-label">Amount</label>
+            <div class="input-group">
+                <span class="input-group-text">{{ selectedCurrencySymbol }}</span>
+                <input type="number" id="amount" class="form-control" placeholder="Enter Amount" [value]="amount_without_total()" disabled>
+            </div>
+        </div>
+    
+        <div class="col-md-3">
+            <label for="tds" class="form-label">TDS</label>
+            <div class="input-group">
+                <span class="input-group-text">{{ selectedCurrencySymbol }}</span>
+                <input type="number" id="tds" class="form-control" formControlName="tds" placeholder="TDS" >
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label for="discount" class="form-label">Discount</label>
+            <div class="input-group">
+                <span class="input-group-text">{{ selectedCurrencySymbol }}</span>
+                <input type="number" id="discount" class="form-control" formControlName="discount" placeholder="Discount" [value]="0">
+            </div>
+        </div>
+    
+        <div class="col-md-3">
+            <label for="total" class="form-label">Total Recieved Amount</label>
+            <div class="input-group">
+                <span class="input-group-text">{{ selectedCurrencySymbol }}</span>
+                <input type="text" id="total" class="form-control" [value]="calculateTotal()" placeholder="Total Amount" disabled>
+            </div>
+        </div>
+    </div>
+
+    <!-- Converted Amounts -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="converted_inr_amount" class="form-label">Converted INR Amount</label>
+            <div class="input-group">
+                <span class="input-group-text">₹</span>
+                <input type="text" id="converted_inr_amount" class="form-control" [value]="convertedInrAmount" placeholder="Converted INR Amount" disabled>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="converted_inr_tds" class="form-label">Converted INR TDS</label>
+            <div class="input-group">
+                <span class="input-group-text">₹</span>
+                <input type="text" id="converted_inr_tds" class="form-control" [value]="convertedInrTds" placeholder="Converted INR TDS" disabled>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="input-group mb-3">
+        <button type="button" class="btn btn-outline-primary w-100" (click)="onSubmit()">
+            {{ invoiceId ? 'Update Invoice' : 'Create Invoice' }}
+        </button>
+    </div>
+</form>

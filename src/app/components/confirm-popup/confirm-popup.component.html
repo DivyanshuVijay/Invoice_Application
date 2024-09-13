@@ -1,0 +1,11 @@
+
+<div class="dialog-main">
+  <h2 class="dialog-title">{{ data.title }}</h2>
+  <mat-dialog-content class="dialog-content">
+    <p>{{ data.message }}</p>
+  </mat-dialog-content>
+  <mat-dialog-actions class="dialog-actions">
+    <button class="btn btn-outline-secondary" (click)="close('no')">No</button>
+    <button class="btn btn-primary" (click)="close('yes')">Yes</button>
+  </mat-dialog-actions>  
+</div>

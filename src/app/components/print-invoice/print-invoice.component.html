@@ -1,0 +1,112 @@
+@for(invoice of printService.data; track $index){
+  <div id="print-container" style="padding: 20px; font-family: Arial, sans-serif; height: 100%; width: 100%; max-width: 800px; margin: auto;">
+    <div class="header" style="display: flex; justify-content: space-between;">
+      <div style="text-align: left; width: 50%">
+        <h2 style=" font-size: 20px; color: #220273;"><strong>{{invoice.company.name}}</strong></h2>
+        <p style="margin: 0;font-size: 15px">Email: {{invoice.company.email}}</p>
+        <p style="font-size: 15px">Website: {{invoice.company.website}}</p>
+        <p class="mt-1" style="margin: 0;font-size: 15px">{{invoice.company.address}}</p>
+        <p>Phone: {{invoice.company.phone}}</p>
+      </div>
+      <div class="logo-img" style="text-align: right; width: 50%;"  >
+        <img [src]="invoice.company.logo.url" width="80%">
+      </div>
+    </div>
+    
+    <div style="background-color: #393871;" class="invoice_date pb-1 pt-1 ">
+      <h3 style="text-align: left; font-size: 20px; color: white;" class="ms-2 mt-0 mb-0">INVOICE NO. - {{ invoice.invoiceNumber }}</h3>
+      <p style="text-align: right;font-size: 20px; color: white;" class="me-2 mt-0 mb-0">DATE - {{ (invoice.createdAt.seconds * 1000 + invoice.createdAt.nanoseconds / 1000000) | date:'dd/MM/yyyy' }}</p>
+    </div>
+    
+    <div style="margin-top: 10px; margin-bottom: 10px;" class="billto_instructions">
+      <h3 style="font-size: 20px; color: #393871;" class="ms-2">BILL TO</h3>
+      <h3 style="font-size: 20px; color: #393871" class="me-2">INSTRUCTIONS</h3>
+    </div>
+    
+    <div style="margin-bottom: 20px; display: flex; justify-content: space-between;">
+      <div class="ms-2 client_info">
+        <p><strong>{{ invoice.clientName.name  }}</strong></p>
+        <p>{{ invoice.clientName.address }}</p>
+        <p>{{ invoice.clientName.phone }}</p>
+        <p>{{ invoice.clientName.email }}</p>
+      </div>
+      <div class="me-2">
+        {{invoice.description}}
+      </div>
+    </div>
+    
+    <table width="100%" style="border-collapse: collapse; margin-bottom: 12px;border-bottom: 2px solid grey;">
+      <thead>
+        <tr style="background-color: #393871;">
+          <th style="padding: 8px;  text-align: center; color: white">QUANTITY</th>
+          <th style="padding: 8px;  text-align: center; color: white;">ITEM NAME</th>
+          <th style="padding: 8px;  text-align: center; color: white">UNIT PRICE</th>
+          <th style="padding: 8px;  text-align: center; color: white">TOTAL</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(item of invoice.items ; track $index){
+          <tr>
+            <td style="padding: 6px;text-align: center; border-bottom: 1px solid #ddd;">{{ item.quantity }}</td>
+            <td style="padding: 6px;text-align: center; border-bottom: 1px solid #ddd;">{{ item.name }}</td>
+            <td style="padding: 6px;text-align: center; border-bottom: 1px solid #ddd;">{{ item.price | currency:invoice.selectedCurrencySymbol }}</td>
+            <td style="padding: 6px;text-align: center; border-bottom: 1px solid #ddd;">{{ item.quantity * item.price | currency:invoice.selectedCurrencySymbol }}</td>
+          </tr>
+        }
+        
+        <!-- Add empty rows to fill the table -->
+        @for(_ of getEmptyRows(invoice); track $index) {
+          <tr>
+            <td style="padding: 6px;text-align: center; border-bottom: 1px solid #ddd;">&nbsp;</td>
+            <td style="padding: 6px;text-align: center; border-bottom: 1px solid #ddd;">&nbsp;</td>
+            <td style="padding: 6px;text-align: center; border-bottom: 1px solid #ddd;">&nbsp;</td>
+            <td style="padding: 6px;text-align: center; border-bottom: 1px solid #ddd;">&nbsp;</td>
+          </tr>
+        }
+        
+      </tbody>
+    </table>
+    
+    <div class="payment_subtotal">
+      <div class="payment_type">
+        MAKE ALL CHEQUES/PAYMENT TRANSFERABLE TO
+      </div>
+      <div class="subtotal pb-3">
+        <div style="color: #242179">
+          SUBTOTAL:
+        </div>
+        <div>
+          {{ invoice.amount | currency:invoice.selectedCurrencySymbol }}
+        </div>
+      </div>
+    </div>
+    
+    <div class="account_info_total_payment">
+      <div class="payment_info">
+        <p>ACCOUNT NAME - {{invoice.company.accountName}}</p>
+        <p>ACCOUNT NO. - {{invoice.company.accountNumber}}</p>
+        <p>PAN NUMBER - {{invoice.company.panNumber}}</p>
+        <p>BANK - {{invoice.company.bank}}</p>
+        <p>BRANCH - {{invoice.company.branch}}</p>
+        <p>IFSC CODE - {{invoice.company.ifscCode}}</p>
+      </div>
+      <div class="total_amount_section">
+        <div style="color: white; width: 100%;">
+          .
+        </div>
+        <div class="total_amount">
+          <div style="display: flex; justify-content: space-between;width: 100%;" class="mt-1 mb-1" >
+            <div style="color: #393871; display: flex; ">
+              TOTAL AMOUNT PAYABLE:
+            </div>
+            <div>
+              {{ invoice.amount | currency:invoice.selectedCurrencySymbol }}
+            </div>
+          </div>
+        </div>
+        <br><br>
+        <h6 style="color: rgb(88, 88, 88); text-align: end;">Thank you for your business with us!</h6>
+      </div>
+    </div>  
+  </div>
+}

@@ -1,0 +1,65 @@
+<div class="mb-4">
+
+    <h1 class="header mt-4">Manage Tasks</h1>
+    <div class="todo-list-container">
+        
+    <form [formGroup]="statusFilter" class="create_filter">
+            <div class="create-task-section">
+                <button class="create-task-button" (click)="openTodoDialog()">Create Todo</button>
+            </div>
+        <div class="filter-section">
+            <label for="statusFilter">Filter by Status:</label>
+            <mat-form-field appearance="fill">
+            <mat-select id="statusFilter" (selectionChange)="filterTodosByStatus()" formControlName="selectedStatus" placeholder="Select Status" multiple>
+                <mat-option value="Open">Open</mat-option>
+                <mat-option value="InProgress">In Progress</mat-option>
+                <mat-option value="Review">Review</mat-option>
+                <mat-option value="Completed">Completed</mat-option>
+            </mat-select>
+            </mat-form-field>
+        </div>
+    </form>
+        
+    @if(isSuperAdmin){
+
+        @for(employee of employees; track $index){       
+            <div  class="employee-section">
+                <h2 class="employee-name">{{ employee.name }}</h2>
+                @if(groupedTodos[employee.name].length > 0){
+                    <ul class="todo-list">
+                        @for(todo of groupedTodos[employee.name]; track $index){
+                            <li class="todo-item" (click)="navigateToEdit(todo.id)">
+                                <div class="todo-content">
+                                    <span class="todo-title">{{ todo.title }}</span>
+                                    <!-- <span class="todo-description">{{ todo.description }}</span> -->
+                                    <span class="todo-status" [ngClass]="todo.status">{{ todo.status }}</span>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }@else {
+                    <div class="no-tasks">No assigned Tasks...</div>
+                }
+            </div>
+        }
+    }@else {  
+            <div class="employee-section">
+                <h2 class="employee-name">My Tasks</h2>
+                <ul class="todo-list">
+                    @for( task of userSpecificTasks; track $index){
+                        <li  class="todo-item" (click)="navigateToEdit(task.id)">
+                          <div class="todo-content">
+                            <span class="todo-title">{{ task.title }}</span>
+                            <span class="todo-status" [ngClass]="task.status">{{ task.status }}</span>
+                          </div>
+                        </li>
+                    }
+                    @if(userSpecificTasks.length === 0){
+                        <div class="no-tasks">No assigned Tasks...</div>
+                    }
+                </ul>
+              </div>
+    }
+    </div>
+
+</div>

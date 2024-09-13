@@ -1,0 +1,46 @@
+<form class="col-lg-10 col-md-10 col-sm-12 ps-3 pe-3 m-auto mt-5" [formGroup]="employeeForm">
+    <h2 class="text-center mb-3">{{ employeeId ? 'Update Employee' : 'Add Employee' }}</h2>
+
+    <div class="row mb-3">
+        <label for="amount" class="form-label">Enter Name : <span class="text-danger">*</span></label>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Enter Name" formControlName="name" [ngClass]="{'is-invalid': employeeForm.get('name')?.invalid && employeeForm.get('name')?.touched}"/>
+        </div>
+    </div>
+
+
+    <div class="row mb-3">
+        <label for="amount" class="form-label">Enter Email : <span class="text-danger">*</span></label>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Enter Email" formControlName="email" [ngClass]="{'is-invalid': employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched}"/>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="amount" class="form-label">Enter Phone : <span class="text-danger">*</span></label>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Enter Phone" formControlName="phone" [ngClass]="{'is-invalid': employeeForm.get('phone')?.invalid && employeeForm.get('phone')?.touched}"/>
+        </div>
+    </div>
+    
+    <div class="row mb-3">
+        <label for="amount" class="form-label">Enter Joining Date : <span class="text-danger">*</span></label>
+        <div class="input-group">
+            <input type="date" class="form-control" placeholder="Enter Joining Date" formControlName="joining_date" [ngClass]="{'is-invalid': employeeForm.get('joining_date')?.invalid && employeeForm.get('joining_date')?.touched}"/>
+        </div>
+    </div>
+    
+    <div class="row mb-3">
+        <label for="amount" class="form-label">Enter Timesheet URL : <span class="text-danger">*</span></label>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Enter Timesheet URL" formControlName="timesheet" [ngClass]="{'is-invalid': employeeForm.get('timesheet')?.invalid && employeeForm.get('timesheet')?.touched}"/>
+        </div>
+    </div>
+
+    <!-- Button -->
+    <div class="input-group mb-3">
+        <button type="button" class="btn btn-outline-primary w-100" (click)="onSubmit(employeeId)">
+            {{ employeeId ? 'Update Employee' : 'Create Employee' }}
+        </button>
+    </div>
+</form>

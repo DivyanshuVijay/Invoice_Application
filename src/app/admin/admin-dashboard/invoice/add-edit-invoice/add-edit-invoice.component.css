@@ -1,0 +1,32 @@
+.remove-icon{
+    cursor: pointer;
+    color: red;
+}
+
+/* Make the form responsive */
+form {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Make the table responsive */
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  /* Make the dropdown menu responsive */
+  .dropdown-menu {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  
+  
+
+  /* Add horizontal scrolling to the table on small devices */
+  @media only screen and (max-width: 768px) {
+    .table-responsive {
+      overflow-x: scroll;
+    }
+  }
