@@ -98,10 +98,10 @@
           <td >{{ invoice.invoiceNumber }}</td>
           <td>{{ invoice.createdAt | date: 'MMM d, y' }}</td>
 
-          <td >{{ invoice.expected_payment_date | date: 'MMM d, y'}}</td>
-          <td>{{ invoice.clientName.name }}</td>
-          <td >{{ invoice.assigned_project.title}}</td>
-          <td >{{ invoice.company.name }}</td>
+          <td >{{ invoice?.expected_payment_date | date: 'MMM d, y'}}</td>
+          <td>{{ invoice.clientName?.name }}</td>
+          <td >{{ invoice.assigned_project?.title}}</td>
+          <td >{{ invoice.company?.name }}</td>
           <td>
             <select [(ngModel)]="invoice.status" (ngModelChange)="updateStatus(invoice)">
               <option value="CREATED">CREATED</option>

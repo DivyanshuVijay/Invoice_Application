@@ -15,7 +15,7 @@
     
     <div style="background-color: #393871;" class="invoice_date pb-1 pt-1 ">
       <h3 style="text-align: left; font-size: 20px; color: white;" class="ms-2 mt-0 mb-0">INVOICE NO. - {{ invoice.invoiceNumber }}</h3>
-      <p style="text-align: right;font-size: 20px; color: white;" class="me-2 mt-0 mb-0">DATE - {{ (invoice.createdAt.seconds * 1000 + invoice.createdAt.nanoseconds / 1000000) | date:'dd/MM/yyyy' }}</p>
+      <p style="text-align: right;font-size: 20px; color: white;" class="me-2 mt-0 mb-0">DATE - {{ invoice.createdAt | date:'dd/MM/yyyy' }}</p>
     </div>
     
     <div style="margin-top: 10px; margin-bottom: 10px;" class="billto_instructions">

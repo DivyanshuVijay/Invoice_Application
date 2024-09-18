@@ -68,8 +68,7 @@ export class AddEditInvoiceComponent implements OnInit {
       total_recieved_amount : null,
       amount : null,
       createdAt: null,
-      assigned_project : [null],
-      convertedInrAmount : [null, Validators.required],
+      assigned_project : [null,Validators.required],
       expected_payment_date : [null],
     });
 
@@ -93,15 +92,15 @@ export class AddEditInvoiceComponent implements OnInit {
         this.updateConvertedAmounts();
   
         // Clear the existing items in the form array
-        this.items().clear();
+        this.Items.clear();
   
         // Create input fields for each item in the invoice
         invoice.items.forEach((item: any) => {
-          this.items().push(this.createItem());
+          this.Items.push(this.createItem());
         });
   
         // Patch the values of the items in the form array
-        this.items().controls.forEach((control: any, index: number) => {
+        this.Items.controls.forEach((control: any, index: number) => {
           control.patchValue(invoice.items[index]);
         });
       }
@@ -159,48 +158,64 @@ export class AddEditInvoiceComponent implements OnInit {
       this.projects = res;
     })
 
-    this.items().valueChanges.subscribe((values: any[]) => {
-      this.amount_without_total();
-      this.calculateTotal();
-    });
+    // this.items().valueChanges.subscribe((values: any[]) => {
+    //   this.amount_without_total();
+    //   this.calculateTotal();
+    // });
+
+
+    // this.invoiceForm.get('amount')?.valueChanges.subscribe(() => {
+    //   this.updateConvertedInrAmount();
+    // });
 
   }
-
-
 
 
   createItem(): FormGroup {
     return this.fb.group({
       name: [''],
-      quantity: null,
-      price: null
+      quantity: 1,
+      price: null,
+      total : 0
     });
   }
 
-  items(): FormArray {
+  get Items(){
     return this.invoiceForm.get('items') as FormArray;
   }
 
   addItem() {
-    this.items().push(this.createItem());
+    this.Items.push(this.createItem());
   }
 
   removeItem(index: number) {
-    if (this.items().length > 1) {
-        this.items().removeAt(index);
-        this.amount_without_total();
-        this.calculateTotal();
+    console.log(index)
+    if (this.Items.length > 1) {
+        this.Items.controls.splice(index, 1);
+        this.invoiceForm.updateValueAndValidity()
+        console.log(this.Items)
+        this.calculateTotalAmount();  // Update the total amount after removing
     }
-}
+  }
 
+  // Calculate the total amount based on form array items
+  calculateTotalAmount(): number {
+    const items = JSON.parse(JSON.stringify(this.Items.value));
+    console.log(items)
+    return items.reduce((acc : any, item : any) => acc + (item.quantity * item.price || 0), 0);
+  }
+
+  //to calculate the total amount of spectifc item 
   calculateItemTotal(index: number): number {
-    const item = this.items().at(index).value;
-    return item.quantity * item.price;
+    const item = JSON.parse(JSON.stringify(this.Items.at(index).value));
+    return (item.quantity * item.price) || Number(item.total) ;
   }
 
   amount_without_total() {
-    let ans = this.items().value.reduce((acc: any, item: any) => acc + item.quantity * item.price, 0);
-    this.invoiceForm.value.amount = ans;
+    const items = JSON.parse(JSON.stringify(this.Items.value));
+    let ans = items.reduce((acc: any, item: any) => acc + (item.quantity * item.price || Number(item.total)), 0);
+    // this.invoiceForm.value.amount = ans;
+    this.invoiceForm.get('amount')?.patchValue(ans);
     this.updateConvertedAmounts();
     return ans;
   }
@@ -213,7 +228,7 @@ export class AddEditInvoiceComponent implements OnInit {
     this.invoiceForm.value.total_recieved_amount = ans;
     this.updateConvertedAmounts();
     return ans;
-}
+  }
 
   updateConvertedAmounts() {
     const amount = this.invoiceForm.value.amount || 0;
@@ -239,7 +254,23 @@ export class AddEditInvoiceComponent implements OnInit {
     }
   }
 
+  onAmountChange(): void {
+    this.updateConvertedInr();
+  }
 
+
+  updateConvertedInr(): void {
+    const amount = this.invoiceForm.get('amount')?.value;
+    if (this.selectedCurrencySymbol === '₹') {
+      this.convertedInrAmount = amount;
+    } else {
+      this.convertedInrAmount = amount * this.currencyConversionRate;
+    }
+    
+    // Update the form control value
+    this.invoiceForm.get('convertedInrAmount')?.patchValue(this.convertedInrAmount );
+  }
+  
 
 
   onSubmit(){

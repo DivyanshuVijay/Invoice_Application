@@ -56,7 +56,7 @@
             </div>
             <!-- Description -->
             <div class="col-md-3">
-                <label for="company" class="form-label">Assign Project </label>
+                <label for="company" class="form-label">Assign Project <span class="text-danger">*</span></label>
                 <select id="company" class="form-select" formControlName="assigned_project"  [compareWith]="compareFn" [ngClass]="{'is-invalid': invoiceForm.get('assigned_project')?.invalid && invoiceForm.get('assigned_project')?.touched}">
                     <option disabled value="" selected>Assign Project</option>
                     @for(project of filteredProjects; track $index) {
@@ -119,7 +119,7 @@
 
     <!-- Dynamic Items (FormArray) -->
     <div formArrayName="items" class="mb-3">
-        @for(item of items().controls; track $index) {
+        @for(item of Items.controls; track $index) {
             <div [formGroupName]="$index" class="row mb-3">
                 <!-- Serial Number -->
                 <div class="col-md-1 d-flex align-items-center justify-content-center">
@@ -139,7 +139,7 @@
                 </div>
                 <!-- Total -->
                 <div class="col-md-2 d-flex align-items-center justify-content-center">
-                    <input type="text" class="form-control" placeholder="Total" [value]="calculateItemTotal($index)" >
+                    <input type="text" class="form-control" placeholder="Total" [value]="calculateItemTotal($index)" formControlName="total" (input)="calculateTotalAmount()" >
                 </div>
                 <!-- Remove Button -->
                 <div class="col-md-1 d-flex align-items-center justify-content-center" >
@@ -163,7 +163,7 @@
             <label for="amount" class="form-label">Amount</label>
             <div class="input-group">
                 <span class="input-group-text">{{ selectedCurrencySymbol }}</span>
-                <input type="number" id="amount" class="form-control" placeholder="Enter Amount" [value]="amount_without_total()" disabled>
+                <input d type="number" id="amount" class="form-control" placeholder="Enter Amount" [value]="amount_without_total()"  disabled>
             </div>
         </div>
     
@@ -186,28 +186,30 @@
             <label for="total" class="form-label">Total Recieved Amount</label>
             <div class="input-group">
                 <span class="input-group-text">{{ selectedCurrencySymbol }}</span>
-                <input type="text" id="total" class="form-control" [value]="calculateTotal()" placeholder="Total Amount" disabled>
+                <input type="number" id="total" class="form-control" [value]="calculateTotal()" placeholder="Total Amount" disabled>
             </div>
         </div>
     </div>
 
     <!-- Converted Amounts -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <label for="converted_inr_amount" class="form-label">Converted INR Amount <span class="text-danger">*</span></label>
-            <div class="input-group">
-                <span class="input-group-text">₹</span>
-                <input type="text" id="converted_inr_amount" class="form-control" formControlName="convertedInrAmount" placeholder="Converted INR Amount" [ngClass]="{'is-invalid': invoiceForm.get('convertedInrAmount')?.invalid && invoiceForm.get('convertedInrAmount')?.touched}">
+
+         <div class="row mb-3" >
+             <div class="col-md-6">
+                 <label for="converted_inr_amount" class="form-label">Converted INR Amount <span class="text-danger">*</span></label>
+                 <div class="input-group">
+                     <span class="input-group-text">₹</span>
+                     <input type="number" id="converted_inr_amount" class="form-control" [value]="convertedInrAmount" placeholder="Converted INR Amount" [disabled]="selectedCurrencySymbol === '₹'">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="converted_inr_tds" class="form-label">Converted INR TDS</label>
+                    <div class="input-group">
+                        <span class="input-group-text">₹</span>
+                        <input type="number" id="converted_inr_tds" class="form-control" [value]="convertedInrTds" placeholder="Converted INR TDS" disabled>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <label for="converted_inr_tds" class="form-label">Converted INR TDS</label>
-            <div class="input-group">
-                <span class="input-group-text">₹</span>
-                <input type="text" id="converted_inr_tds" class="form-control" [value]="convertedInrTds" placeholder="Converted INR TDS" disabled>
-            </div>
-        </div>
-    </div>
+        
 
     <!-- Submit Button -->
     <div class="input-group mb-3">
