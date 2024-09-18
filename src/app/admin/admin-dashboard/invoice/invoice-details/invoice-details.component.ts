@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ConfirmPopupComponent } from '../../../../components/confirm-popup/confirm-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FileuploadService } from '../../../../services/fileupload.service';
+import { CommonService } from '../../../../services/common.service';
 
 @Component({
   selector: 'app-invoice-details',
@@ -25,6 +26,8 @@ export class InvoiceDetailsComponent implements OnInit {
   private commentService = inject(CommentsService)
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private commonService = inject(CommonService);
+
   invoice : any = null;
   comments: any[] = [];
   filteredComments : any[] =[];
@@ -60,6 +63,10 @@ export class InvoiceDetailsComponent implements OnInit {
     textToSearch : new FormControl('', Validators.required)
   })
 
+  removePreviewImage(){
+    this.previewCommentImage = null;
+  }
+
   openFileSelector(fileType: string) {
     this.selectedFileType = '';
     this.selectedFileType = fileType;
@@ -78,6 +85,7 @@ export class InvoiceDetailsComponent implements OnInit {
 
   async addComment(){
     if(this.commentForm.value.image || this.commentForm.value.message){
+      this.commonService.showLoader();
       let imageObject : any = this.commentForm.value.image;
       if(imageObject){
         try {
@@ -98,6 +106,7 @@ export class InvoiceDetailsComponent implements OnInit {
       this.commentService.addComment(comment, `invoice/${this.invoiceId}/comments`).then(()=>{
         this.previewCommentImage = null;
         this.commentForm.reset();
+        this.commonService.hideLoader();
         this.toastr.success("Comment Added!!");
       }).catch((error)=>{
         this.toastr.error("Error occured while Adding.")

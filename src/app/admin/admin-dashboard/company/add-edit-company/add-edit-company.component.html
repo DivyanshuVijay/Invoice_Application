@@ -6,7 +6,7 @@
     }
 
     <div [ngClass]="{'is-invalid': companyForm.get('logo')?.invalid && companyForm.get('logo')?.touched}">
-        <label  class="form-label">Choose Logo <span class="text-danger">*</span></label>
+        <label  class="form-label">Choose Logo </label>
         <div class="input-group mb-3">
             <!--File Input  -->
             <input
@@ -33,53 +33,57 @@
         <!-- <button class="btn btn-primary ms-3" (click)="removeLogo()">Remove Logo</button> -->
     </div>
     <div class="mb-3" >
-        <label  class="form-label">Enter Prefix <span class="text-danger">*</span></label>
+        <label  class="form-label">Enter Prefix </label>
         <input type="text" class="form-control" placeholder="Enter Prefix" formControlName="prefix" [ngClass]="{'is-invalid': companyForm.get('prefix')?.invalid && companyForm.get('prefix')?.touched}">
+    </div>
+    <div class="mb-3" >
+        <label  class="form-label">Swift Code </label>
+        <input type="text" class="form-control" placeholder="Enter Swift Code" formControlName="swiftCode" [ngClass]="{'is-invalid': companyForm.get('prefix')?.invalid && companyForm.get('prefix')?.touched}">
     </div>
     <div class="mb-3">
         <label  class="form-label">Enter name <span class="text-danger">*</span></label>
         <input type="text" class="form-control" placeholder="Enter name" formControlName="name" [ngClass]="{'is-invalid': companyForm.get('name')?.invalid && companyForm.get('name')?.touched}">
     </div>
     <div class=" mb-3">
-        <label  class="form-label">Enter email <span class="text-danger">*</span></label>
+        <label  class="form-label">Enter email </label>
         <input type="text" class="form-control" placeholder="Enter email" formControlName="email" [ngClass]="{'is-invalid': companyForm.get('email')?.invalid && companyForm.get('email')?.touched}">
     </div>
     <div class="mb-3">
-        <label  class="form-label">Enter phone <span class="text-danger">*</span></label>
+        <label  class="form-label">Enter phone </label>
         <input class="form-control" placeholder="Enter phone" formControlName="phone" [ngClass]="{'is-invalid': companyForm.get('phone')?.invalid && companyForm.get('phone')?.touched}">
     </div>
     <div class="mb-3">
-        <label  class="form-label">Enter Address <span class="text-danger">*</span></label>
+        <label  class="form-label">Enter Address </label>
         <textarea class="form-control" placeholder="Enter Address" style="height: 100px" formControlName="address" [ngClass]="{'is-invalid': companyForm.get('address')?.invalid && companyForm.get('address')?.touched}"></textarea>
     </div>
     <div class=" mb-3">
-        <label  class="form-label">Enter Website <span class="text-danger">*</span></label>
+        <label  class="form-label">Enter Website </label>
         <input class="form-control" placeholder="Enter Website" formControlName="website" [ngClass]="{'is-invalid': companyForm.get('website')?.invalid && companyForm.get('website')?.touched}">
     </div>
     
     <!-- account info -->
     <div class=" mb-3">
-        <label  class="form-label">Enter PAN Number <span class="text-danger">*</span></label>
+        <label  class="form-label">Enter PAN Number </label>
         <input class="form-control" placeholder="Enter PAN Number" formControlName="panNumber" [ngClass]="{'is-invalid': companyForm.get('panNumber')?.invalid && companyForm.get('panNumber')?.touched}">
     </div>
     <div class=" mb-3">
-        <label  class="form-label">Enter Account Name <span class="text-danger">*</span></label>
+        <label  class="form-label">Enter Account Name </label>
         <input class="form-control" placeholder="Enter Account Name" formControlName="accountName" [ngClass]="{'is-invalid': companyForm.get('accountName')?.invalid && companyForm.get('accountName')?.touched}">
     </div>
     <div class="mb-3">
-        <label  class="form-label">Enter Account Number <span class="text-danger">*</span></label>
+        <label  class="form-label">Enter Account Number </label>
         <input class="form-control" placeholder="Enter Account Number" formControlName="accountNumber" [ngClass]="{'is-invalid': companyForm.get('accountNumber')?.invalid && companyForm.get('accountNumber')?.touched}">
     </div>
     <div class="mb-3">
-        <label  class="form-label">Enter Bank <span class="text-danger">*</span></label>
+        <label  class="form-label">Enter Bank </label>
         <input class="form-control" placeholder="Enter Bank" formControlName="bank" [ngClass]="{'is-invalid': companyForm.get('bank')?.invalid && companyForm.get('bank')?.touched}">
     </div>
     <div class="mb-3">
-        <label  class="form-label">Enter Branch <span class="text-danger">*</span></label>
+        <label  class="form-label">Enter Branch </label>
         <input class="form-control" placeholder="Enter Branch" formControlName="branch" [ngClass]="{'is-invalid': companyForm.get('branch')?.invalid && companyForm.get('branch')?.touched}">
     </div>
     <div class="mb-3">
-        <label  class="form-label">Enter IFSC Code <span class="text-danger">*</span></label>
+        <label  class="form-label">Enter IFSC Code </label>
         <input class="form-control" placeholder="Enter IFSC Code" formControlName="ifscCode" [ngClass]="{'is-invalid': companyForm.get('ifscCode')?.invalid && companyForm.get('ifscCode')?.touched}">
     </div>
 

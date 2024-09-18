@@ -153,5 +153,11 @@
     top: -999px;
     left: -9999px;
   }
+
+  .fa-circle-xmark{
+    position: absolute;
+    top: 5px;
+    right: 10px;
+  }
   
 

@@ -6,14 +6,17 @@ import { ToastrService } from 'ngx-toastr';
 import { CommonService } from '../../../../services/common.service';
 import { UsersService } from '../../../../services/users.service';
 import { NgClass } from '@angular/common';
-
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 @Component({
   selector: 'app-add-edit-client',
   standalone: true,
-  imports: [ReactiveFormsModule, NgClass],
+  imports: [ReactiveFormsModule, NgClass, EditorModule],
   templateUrl: './add-edit-client.component.html',
-  styleUrl: './add-edit-client.component.css'
+  styleUrl: './add-edit-client.component.css',
+  providers: [
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
+  ],
 })
 export class AddEditClientComponent {
   clientId: any = null;
@@ -47,7 +50,11 @@ export class AddEditClientComponent {
       this.employees = res;
     })
   }
-
+  editorConfig = {
+    base_url: '/tinymce',
+    suffix: '.min',
+    plugins: 'lists link image table wordcount',
+  };
 
   loadClient(clientId: string){
     this.clientService.getSingleClient(clientId).subscribe((client:any)=>{
@@ -60,14 +67,14 @@ export class AddEditClientComponent {
 
   clientForm = new FormGroup({
     name : new FormControl('', Validators.required),
-    email : new FormControl('', Validators.required),
-    phone : new FormControl('', Validators.required),
-    project_category : new FormControl('', Validators.required),
-    source : new FormControl('', Validators.required),
-    status : new FormControl('', Validators.required),
-    address : new FormControl('', Validators.required),
-    contact_person : new FormControl('', Validators.required),
-    quoted_rate : new FormControl('', Validators.required),
+    email : new FormControl(''),
+    phone : new FormControl(''),
+    project_category : new FormControl(''),
+    source : new FormControl(''),
+    status : new FormControl(''),
+    address : new FormControl(''),
+    contact_person : new FormControl(''),
+    quoted_rate : new FormControl(''),
   })
 
   onSubmit(){

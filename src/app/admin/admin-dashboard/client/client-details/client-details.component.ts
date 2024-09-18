@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ConfirmPopupComponent } from '../../../../components/confirm-popup/confirm-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FileuploadService } from '../../../../services/fileupload.service';
+import { CommonService } from '../../../../services/common.service';
 
 @Component({
   selector: 'app-client-details',
@@ -23,6 +24,8 @@ export class ClientDetailsComponent implements OnInit {
   private clientService = inject(ClientsService)
   private commentService = inject(CommentsService)
   private fileuploadService = inject(FileuploadService);
+  private commonService = inject(CommonService);
+
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   client : any = null;
@@ -72,6 +75,7 @@ export class ClientDetailsComponent implements OnInit {
 
   async addComment(){
     if(this.commentForm.value.image || this.commentForm.value.message){
+      this.commonService.showLoader();
       let imageObject : any = this.commentForm.value.image;
       if(imageObject){
         try {
@@ -92,6 +96,7 @@ export class ClientDetailsComponent implements OnInit {
       this.commentService.addComment(comment, `client/${this.clientId}/comments`).then(()=>{
         this.previewCommentImage = null;
         this.commentForm.reset();
+        this.commonService.hideLoader();
         this.toastr.success("Comment Added!!");
       }).catch((error)=>{
         this.toastr.error("Error occured while Adding.")
@@ -131,6 +136,10 @@ export class ClientDetailsComponent implements OnInit {
         });
       }
     }); 
+  }
+
+  removePreviewImage(){
+    this.previewCommentImage = null;
   }
 
 

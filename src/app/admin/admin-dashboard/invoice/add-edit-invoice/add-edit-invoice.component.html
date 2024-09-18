@@ -28,7 +28,7 @@
         </div>
         <div class="col-md-4">
             <label for="company" class="form-label">Company <span class="text-danger">*</span></label>
-            <select id="company" class="form-select" formControlName="company" [compareWith]="compareFn" [ngClass]="{'is-invalid': invoiceForm.get('company')?.invalid && invoiceForm.get('company')?.touched}">
+            <select id="company" class="form-select" formControlName="company" [compareWith]="compareFn" [ngClass]="{'is-invalid': invoiceForm.get('company')?.invalid && invoiceForm.get('company')?.touched}" >
                 <option disabled value="" selected>Select Company</option>
                 @for(company of companies; track $index) {
                     <option [ngValue]="company">{{ company.name }}</option>
@@ -56,7 +56,7 @@
             </div>
             <!-- Description -->
             <div class="col-md-3">
-                <label for="company" class="form-label">Assign Project <span class="text-danger">*</span></label>
+                <label for="company" class="form-label">Assign Project </label>
                 <select id="company" class="form-select" formControlName="assigned_project"  [compareWith]="compareFn" [ngClass]="{'is-invalid': invoiceForm.get('assigned_project')?.invalid && invoiceForm.get('assigned_project')?.touched}">
                     <option disabled value="" selected>Assign Project</option>
                     @for(project of filteredProjects; track $index) {
@@ -66,7 +66,7 @@
             </div>
             <!-- Expected payment date -->
             <div class="col-md-3">
-                <label for="company" class="form-label">Expected Payment Date <span class="text-danger">*</span></label>
+                <label for="company" class="form-label">Expected Payment Date </label>
                 <input type="date" id="expected_payment_date" class="form-control" placeholder="Expected Payment Date" formControlName="expected_payment_date" [ngClass]="{'is-invalid': invoiceForm.get('expected_payment_date')?.invalid && invoiceForm.get('expected_payment_date')?.touched}">
             </div>
             <div class="col-md-3">
@@ -77,8 +77,9 @@
         
         <div class="row mb-3">
             <div class="col-md-12">
-                <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
-                <textarea id="description" class="form-control" placeholder="Write description" style="height: 100px" formControlName="description" [ngClass]="{'is-invalid': invoiceForm.get('description')?.invalid && invoiceForm.get('description')?.touched}"></textarea>
+                <label for="description" class="form-label">Description </label>
+                <!-- <textarea id="description" class="form-control" placeholder="Write description" style="height: 100px" formControlName="description" [ngClass]="{'is-invalid': invoiceForm.get('description')?.invalid && invoiceForm.get('description')?.touched}"></textarea> -->
+                <editor [init]="editorConfig" formControlName="description"></editor>
             </div>
         </div>
 
@@ -138,7 +139,7 @@
                 </div>
                 <!-- Total -->
                 <div class="col-md-2 d-flex align-items-center justify-content-center">
-                    <input type="text" class="form-control" placeholder="Total" [value]="calculateItemTotal($index)" disabled>
+                    <input type="text" class="form-control" placeholder="Total" [value]="calculateItemTotal($index)" >
                 </div>
                 <!-- Remove Button -->
                 <div class="col-md-1 d-flex align-items-center justify-content-center" >
@@ -193,10 +194,10 @@
     <!-- Converted Amounts -->
     <div class="row mb-3">
         <div class="col-md-6">
-            <label for="converted_inr_amount" class="form-label">Converted INR Amount</label>
+            <label for="converted_inr_amount" class="form-label">Converted INR Amount <span class="text-danger">*</span></label>
             <div class="input-group">
                 <span class="input-group-text">₹</span>
-                <input type="text" id="converted_inr_amount" class="form-control" [value]="convertedInrAmount" placeholder="Converted INR Amount" disabled>
+                <input type="text" id="converted_inr_amount" class="form-control" formControlName="convertedInrAmount" placeholder="Converted INR Amount" [ngClass]="{'is-invalid': invoiceForm.get('convertedInrAmount')?.invalid && invoiceForm.get('convertedInrAmount')?.touched}">
             </div>
         </div>
         <div class="col-md-6">

@@ -8,13 +8,17 @@ import { CompanyService } from '../../../../services/company.service';
 import { ToastrService } from 'ngx-toastr';
 import { formatDate, NgClass } from '@angular/common';
 import { ProjectService } from '../../../../services/project.service';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 @Component({
   selector: 'app-add-edit-invoice',
   standalone: true,
-  imports: [ReactiveFormsModule, NgClass],
+  imports: [ReactiveFormsModule, NgClass, EditorModule],
   templateUrl: './add-edit-invoice.component.html',
-  styleUrl: './add-edit-invoice.component.css'
+  styleUrl: './add-edit-invoice.component.css',
+  providers: [
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
+  ],
 })
 export class AddEditInvoiceComponent implements OnInit {
   invoiceForm!: FormGroup;
@@ -41,6 +45,11 @@ export class AddEditInvoiceComponent implements OnInit {
     return optionOne?.id === optionTwo?.id;
   }
 
+  editorConfig = {
+    base_url: '/tinymce',
+    suffix: '.min',
+    plugins: 'lists link image table wordcount',
+  };
 
   
   constructor(private fb: FormBuilder,private toastr: ToastrService){
@@ -49,7 +58,7 @@ export class AddEditInvoiceComponent implements OnInit {
       invoiceNumber: null,
       clientName: [null, Validators.required],
       status: ['CREATED'],  // Default status
-      description: ['', Validators.required],
+      description: [''],
       company: [null, Validators.required],
       tds: 0,
       discount : 0,
@@ -59,8 +68,9 @@ export class AddEditInvoiceComponent implements OnInit {
       total_recieved_amount : null,
       amount : null,
       createdAt: null,
-      assigned_project : [null, Validators.required],
-      expected_payment_date : [null, Validators.required],
+      assigned_project : [null],
+      convertedInrAmount : [null, Validators.required],
+      expected_payment_date : [null],
     });
 
     this.invoiceId = this.route.snapshot.paramMap.get('id');

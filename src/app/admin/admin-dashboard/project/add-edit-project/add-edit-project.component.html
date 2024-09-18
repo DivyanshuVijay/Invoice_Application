@@ -20,26 +20,26 @@
         <input type="text" class="form-control" placeholder="Title" formControlName="title" [ngClass]="{'is-invalid': projectForm.get('client')?.invalid && projectForm.get('client')?.touched}">
     </div>
     <div class="mb-3">
-        <label class="form-label">Write Description <span class="text-danger">*</span></label>
-        <textarea class="form-control" placeholder="Write description" style="height: 100px" formControlName="description" [ngClass]="{'is-invalid': projectForm.get('client')?.invalid && projectForm.get('client')?.touched}"></textarea>
+        <label class="form-label">Write Description </label>
+        <textarea class="form-control" placeholder="Write description" style="height: 100px" formControlName="description"></textarea>
     </div>
     <div class="mb-3">
-        <label class="form-label">Estimated Hours <span class="text-danger">*</span></label>
+        <label class="form-label">Estimated Hours </label>
         <input class="form-control" placeholder="Estimated Hours" formControlName="estimated_hours" [ngClass]="{'is-invalid': projectForm.get('estimated_hours')?.invalid && projectForm.get('estimated_hours')?.touched}">
     </div>
     <div class=" mb-3">
-        <label  class="form-label">Actual Hours <span class="text-danger">*</span></label>
+        <label  class="form-label">Actual Hours </label>
         <input class="form-control" placeholder="Actual Hours" formControlName="actual_hours" [ngClass]="{'is-invalid': projectForm.get('actual_hours')?.invalid && projectForm.get('actual_hours')?.touched}">
     </div>
     <div>
-        <label  class="form-label">Enter Hourly Rate <span class="text-danger">*</span></label>
+        <label  class="form-label">Enter Hourly Rate </label>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">₹</span>
             <input class="form-control" placeholder="Enter Hourly Rate" formControlName="hourly_rate" [ngClass]="{'is-invalid': projectForm.get('hourly_rate')?.invalid && projectForm.get('hourly_rate')?.touched}">
         </div>
     </div>
     <div>
-        <label  class="form-label">Enter Total Amount <span class="text-danger">*</span></label>
+        <label  class="form-label">Enter Total Amount </label>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">₹</span>
             <input class="form-control" placeholder="Enter Total Amount" formControlName="amount" [ngClass]="{'is-invalid': projectForm.get('amount')?.invalid && projectForm.get('amount')?.touched}">
@@ -47,7 +47,7 @@
     </div>
     
     <div class=" mb-3">
-        <label  class="form-label">Select Assigned Person <span class="text-danger">*</span></label>
+        <label  class="form-label">Select Assigned Person </label>
         <select class="form-select" formControlName="assigned_person" [ngClass]="{'is-invalid': projectForm.get('assigned_person')?.invalid && projectForm.get('assigned_person')?.touched}">
             <option disabled value="">Select Assigned Person</option>
             @for( employee of employees ; track $index){
@@ -56,7 +56,7 @@
         </select>
     </div>
     <div class="mb-3">
-        <label class="form-label">Enter Sheet URL <span class="text-danger">*</span></label>
+        <label class="form-label">Enter Sheet URL </label>
         <input class="form-control" placeholder="Enter Sheet URL" formControlName="sheet_url" [ngClass]="{'is-invalid': projectForm.get('sheet_url')?.invalid && projectForm.get('sheet_url')?.touched}">
     </div>
     

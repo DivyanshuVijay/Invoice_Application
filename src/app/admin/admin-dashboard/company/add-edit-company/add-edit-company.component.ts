@@ -44,17 +44,18 @@ export class AddEditCompanyComponent {
 
   companyForm = new FormGroup({
     name : new FormControl('', Validators.required),
-    prefix : new FormControl('', Validators.required),
-    address : new FormControl('', Validators.required),
-    email : new FormControl('', [Validators.required, Validators.email]),
-    website : new FormControl('', Validators.required),
-    accountNumber : new FormControl('', Validators.required),
-    phone : new FormControl('', Validators.required),
-    bank : new FormControl('', Validators.required),
-    branch : new FormControl('', Validators.required),
-    ifscCode : new FormControl('', Validators.required),
-    accountName : new FormControl('', Validators.required),
-    panNumber : new FormControl('', Validators.required),
+    prefix : new FormControl(''),
+    address : new FormControl(''),
+    email : new FormControl(''),
+    website : new FormControl(''),
+    accountNumber : new FormControl(''),
+    phone : new FormControl(''),
+    bank : new FormControl(''),
+    branch : new FormControl(''),
+    ifscCode : new FormControl(''),
+    accountName : new FormControl(''),
+    panNumber : new FormControl(''),
+    swiftCode : new FormControl(''),
     logo: new FormControl(),
   })
 
@@ -73,7 +74,7 @@ export class AddEditCompanyComponent {
 
   async onSubmit(){
     if(this.companyForm.valid){
-      const {name,prefix, address,accountNumber, accountName, website,email, panNumber, phone, bank,branch, ifscCode, logo} = this.companyForm.value;
+      const {name,prefix, address,accountNumber, accountName, website,email, panNumber, phone, bank,branch, ifscCode, logo,swiftCode} = this.companyForm.value;
 
       let logoObject = logo;
 
@@ -123,6 +124,7 @@ export class AddEditCompanyComponent {
             bank : bank as string,
             branch : branch as string,
             ifscCode : ifscCode as string,
+            swiftCode : swiftCode as string,
             logo : logoObject,
           }
           await this.companyService.updateCompany(newCompany, this.companyId).then(()=>{
@@ -147,6 +149,7 @@ export class AddEditCompanyComponent {
             bank : bank as string,
             branch : branch as string,
             ifscCode : ifscCode as string,
+            swiftCode : swiftCode as string,
             logo : logoObject,
             lastInvoiceNumber : 0,
           }

@@ -95,7 +95,7 @@
 .comment-button {
   padding: 10px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 /* Preview Section */
@@ -199,4 +199,10 @@
     font-size: 14px;
     padding: 6px;
   }
+}
+
+.fa-circle-xmark{
+  position: absolute;
+  top: 5px;
+  right: 10px;
 }

@@ -34,13 +34,13 @@ export class AddEditProjectComponent {
     this.projectForm = new FormGroup({
       client : new FormControl('', Validators.required),
       title : new FormControl(null, Validators.required),
-      description : new FormControl(null, Validators.required),
-      amount : new FormControl(null, Validators.required),
-      hourly_rate : new FormControl(null, Validators.required),
-      estimated_hours : new FormControl(null, Validators.required),
-      actual_hours : new FormControl(null, Validators.required),
-      assigned_person : new FormControl('', Validators.required),
-      sheet_url : new FormControl('', Validators.required),
+      description : new FormControl(''),
+      amount : new FormControl(null),
+      hourly_rate : new FormControl(null),
+      estimated_hours : new FormControl(null),
+      actual_hours : new FormControl(null),
+      assigned_person : new FormControl(''),
+      sheet_url : new FormControl(''),
       created_at : new FormControl(null)
     })
 

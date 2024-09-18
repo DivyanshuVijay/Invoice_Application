@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ConfirmPopupComponent } from '../../../../components/confirm-popup/confirm-popup.component'; 
 import { MatDialog } from '@angular/material/dialog';
 import { FileuploadService } from '../../../../services/fileupload.service';
+import { CommonService } from '../../../../services/common.service';
 
 @Component({
   selector: 'app-project-details',
@@ -23,6 +24,7 @@ export class ProjectDetailsComponent implements OnInit {
   private commentService = inject(CommentsService)
   private fileuploadService = inject(FileuploadService);
   private route = inject(ActivatedRoute);
+  private commonService = inject(CommonService);
   project : any = null;
   comments: any = []
   filteredComments : any[] =[];
@@ -69,10 +71,15 @@ export class ProjectDetailsComponent implements OnInit {
     console.log(file)
   }
 
+  removePreviewImage(){
+    this.previewCommentImage = null;
+  }
+
   async addComment(){
     if(this.commentForm.value.image || this.commentForm.value.message){
+      this.commonService.showLoader();
       let imageObject : any = this.commentForm.value.image;
-
+      
       if(imageObject){
         try {
           if(imageObject instanceof File){
@@ -82,7 +89,7 @@ export class ProjectDetailsComponent implements OnInit {
           console.log('Error while uploading image', error);
         }
       }
-
+      
       
       let comment ={
         message : this.commentForm.value.message,
@@ -90,11 +97,12 @@ export class ProjectDetailsComponent implements OnInit {
         createdAt : new Date(),
         fileType: this.selectedFileType 
       }
-
+      
       console.log(comment)
       this.commentService.addComment(comment, `project/${this.projectId}/comments`).then(()=>{
         this.previewCommentImage = null;
         this.commentForm.reset();
+        this.commonService.hideLoader();
         this.toastr.success("Comment Added!!");
       }).catch((error)=>{
         this.toastr.error("Error occured while Adding.")
@@ -102,7 +110,7 @@ export class ProjectDetailsComponent implements OnInit {
       })
     }
   }
-
+  
   // to search a comment
   searchComment() {
     const searchTerm = this.searchCommentForm.value.textToSearch;

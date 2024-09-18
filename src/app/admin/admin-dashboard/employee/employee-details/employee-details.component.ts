@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmPopupComponent } from '../../../../components/confirm-popup/confirm-popup.component';
 import { FileuploadService } from '../../../../services/fileupload.service';
+import { CommonService } from '../../../../services/common.service';
 
 @Component({
   selector: 'app-employee-details',
@@ -22,6 +23,8 @@ export class EmployeeDetailsComponent {
   private route = inject(ActivatedRoute);
   private commentService = inject(CommentsService)
   private fileuploadService = inject(FileuploadService);
+  private commonService = inject(CommonService);
+
   employeeId : any =null;
   comments: any = [];
   filteredComments : any[] =[];
@@ -73,6 +76,7 @@ export class EmployeeDetailsComponent {
 
   async addComment(){
     if(this.commentForm.value.image || this.commentForm.value.message){
+      this.commonService.showLoader();
       let imageObject : any = this.commentForm.value.image;
       if(imageObject){
         try {
@@ -93,6 +97,7 @@ export class EmployeeDetailsComponent {
       this.commentService.addComment(comment, `users/${this.employeeId}/comments`).then(()=>{
         this.previewCommentImage = null;
         this.commentForm.reset();
+        this.commonService.hideLoader();
         this.toastr.success("Comment Added!!");
       }).catch((error)=>{
         this.toastr.error("Error occured while Adding.")
@@ -111,6 +116,9 @@ export class EmployeeDetailsComponent {
   }
 
 
+  removePreviewImage(){
+    this.previewCommentImage = null;
+  }
 
   deleteComment(comment :any){ 
     if (this.dialogOpen) return; 
